@@ -62,14 +62,7 @@ ul{padding-left:18px;color:#ccc;line-height:1.7}
 .photo-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .photo-slot{height:130px;border-radius:14px;background:#161616;border:1px dashed #444;display:flex;align-items:center;justify-content:center;overflow:hidden}
 .photo-slot img{width:100%;height:100%;object-fit:cover}
-</style>
-<link rel="manifest" href="./manifest.webmanifest">
-<meta name="theme-color" content="#0b0b0d">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-
-</head>
+</style></head>
 <body>
 <div class="app">
 <header><div class="brand">FITNESS FULL <span>| PROJETO 30</span></div><div class="small">Treino em casa • emagrecimento • evolução</div></header>
@@ -98,7 +91,7 @@ ul{padding-left:18px;color:#ccc;line-height:1.7}
       <select id="obDays"><option>3 dias</option><option>4 dias</option><option>5 dias</option><option>6 dias</option></select>
       <label>Alguma limitação ou exercício que causa dor?</label>
       <textarea id="obLimit" rows="2" placeholder="Opcional. Ex.: joelho, punho, lombar..."></textarea>
-      <button class="primary" onclick="finishOnboarding()">CRIAR MEU PROJETO 30</button>
+      <button id="finishOnboardingBtn" class="primary">CRIAR MEU PROJETO 30</button>
     </div>
   </div>
 </section>
@@ -120,23 +113,6 @@ ul{padding-left:18px;color:#ccc;line-height:1.7}
     <p class="muted" id="todayText">Comece seu treino e registre sua alimentação.</p>
   </div>
   <div class="card"><h3>Seu foco</h3><p id="focusText" class="muted">Emagrecimento com treinos curtos e consistentes.</p></div>
-</section>
-  <div class="hero">
-    <div class="tag">SEU PROGRAMA</div>
-    <h1>30 dias para criar constância.</h1>
-    <p class="muted">Treinos de 20 a 40 minutos, alimentação simples e acompanhamento da sua evolução.</p>
-    <button class="primary" onclick="showPage('treino')">COMEÇAR TREINO</button>
-  </div>
-  <div class="grid">
-    <div class="card"><div class="small">Peso atual</div><div class="stat" id="homeWeight">-- kg</div></div>
-    <div class="card"><div class="small">Treinos concluídos</div><div class="stat" id="homeWorkouts">0</div></div>
-  </div>
-  <div class="card">
-    <div class="between"><h3>Meta de hoje</h3><span class="pill" id="todayStatus">0%</span></div>
-    <div class="progressbar"><div id="todayBar"></div></div>
-    <p class="muted" id="todayText">Comece seu treino e registre sua alimentação.</p>
-  </div>
-  <div class="card"><h3>Como funciona</h3><ul><li>Escolha o treino do dia.</li><li>Faça os exercícios seguindo as instruções.</li><li>Registre suas refeições.</li><li>Acompanhe peso e evolução.</li></ul></div>
 </section>
 
 <section id="treino" class="page">
@@ -189,42 +165,6 @@ ul{padding-left:18px;color:#ccc;line-height:1.7}
     <button class="primary" onclick="savePhoto()">SALVAR REFEIÇÃO</button>
   </div>
   <div class="card"><h3>Próxima evolução</h3><p class="muted">A versão conectada à IA poderá estimar automaticamente calorias, proteínas, carboidratos e gorduras a partir da foto e das quantidades informadas.</p></div>
-</section>
-
-
-<section id="foto" class="page">
-  <div class="tag">IA DA ALIMENTAÇÃO</div>
-  <h1>O que você comeu?</h1>
-  <p class="muted">Tire uma foto e registre os alimentos. Nesta versão, a estimativa é feita pelo que você informar. A análise automática por IA será conectada na próxima etapa.</p>
-  <div class="card">
-    <input id="mealPhoto" type="file" accept="image/*" capture="environment">
-    <div id="photoPreview" style="margin-top:12px"></div>
-    <label>O que tem no prato?</label>
-    <textarea id="photoDesc" rows="3" placeholder="Ex.: arroz, frango, salada e feijão"></textarea>
-    <label>Quantidade aproximada</label>
-    <input id="photoQty" placeholder="Ex.: 150 g de frango + 200 g de batata">
-    <button class="primary" onclick="analyzeMeal()">REGISTRAR REFEIÇÃO</button>
-  </div>
-  <div class="card">
-    <h3>Como funciona</h3>
-    <p class="muted">A foto ajuda a identificar os alimentos, mas peso em gramas melhora bastante a estimativa. Calorias e macros são aproximados.</p>
-  </div>
-</section>
-
-<section id="alimentacao" class="page">
-  <div class="tag">ALIMENTAÇÃO</div>
-  <h1>Seu dia</h1>
-  <div class="grid">
-    <div class="card"><div class="small">Calorias</div><div class="stat" id="calTotal">0</div><div class="muted">kcal</div></div>
-    <div class="card"><div class="small">Proteína</div><div class="stat" id="protTotal">0</div><div class="muted">g</div></div>
-  </div>
-  <div class="card">
-    <div class="between"><h3>Meta diária</h3><span class="pill" id="calGoalLabel">2.100 kcal</span></div>
-    <div class="progressbar"><div id="calBar"></div></div>
-    <p class="muted">Use a meta como referência. Ela pode ser ajustada conforme sua evolução e orientação profissional.</p>
-  </div>
-  <div id="mealList"></div>
-  <button class="primary" onclick="showPage('foto')">📷 REGISTRAR REFEIÇÃO</button>
 </section>
 
 <section id="suplementos" class="page">
@@ -300,17 +240,74 @@ ul{padding-left:18px;color:#ccc;line-height:1.7}
 </main>
 
 <nav class="nav">
-<button data-page="home" class="active" onclick="showPage('home')">⌂<br>Início</button>
-<button data-page="treino" onclick="showPage('treino')">🔥<br>Treino</button>
-<button data-page="alimentacao" onclick="showPage('alimentacao')">🍽️<br>Comida</button>
-<button data-page="foto" onclick="showPage('foto')">📷<br>Foto</button>
-<button data-page="evolucao" onclick="showPage('evolucao')">📈<br>Evolução</button>
-<button data-page="suplementos" onclick="showPage('suplementos')">💪<br>Suples</button>
-<button data-page="perfil" onclick="showPage('perfil')">👤<br>Perfil</button>
+<button type="button" data-page="home" class="active">⌂<br>Início</button>
+<button type="button" data-page="treino">🔥<br>Treino</button>
+<button type="button" data-page="alimentacao">🍽️<br>Comida</button>
+<button type="button" data-page="foto">📷<br>Foto</button>
+<button type="button" data-page="evolucao">📈<br>Evolução</button>
+<button type="button" data-page="suplementos">💪<br>Suples</button>
+<button type="button" data-page="perfil">👤<br>Perfil</button>
 </nav>
 </div>
 
 <script>
+const DEFAULT_STATE={weight:null,weights:[],workouts:0,done:[],meals:[],photo:null,onboarded:false,profile:{},planDay:1,startPhoto:null,currentPhoto:null};
+let state={...DEFAULT_STATE,...JSON.parse(localStorage.getItem("pf30")||"{}")};
+state.profile=state.profile||{}; state.weights=Array.isArray(state.weights)?state.weights:[]; state.meals=Array.isArray(state.meals)?state.meals:[]; state.done=Array.isArray(state.done)?state.done:[];
+function save(){localStorage.setItem("pf30",JSON.stringify(state));render();}
+function showPage(id){
+  if(!state.onboarded && id!=="onboarding") id="onboarding";
+  document.querySelectorAll(".page").forEach(x=>x.classList.toggle("active",x.id===id));
+  document.querySelectorAll(".nav button").forEach(x=>x.classList.toggle("active",x.dataset.page===id));
+  if(id==="treino") buildExercises();
+  render();
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+function finishOnboarding(){
+  const name=document.getElementById("obName").value.trim()||"Você";
+  const age=Number(document.getElementById("obAge").value)||null;
+  const weight=Number(document.getElementById("obWeight").value)||null;
+  const height=Number(document.getElementById("obHeight").value)||null;
+  state.profile={name,age,sex:document.getElementById("obSex").value,height,goal:document.getElementById("obGoal").value,level:document.getElementById("obLevel").value,days:document.getElementById("obDays").value,limit:document.getElementById("obLimit").value.trim()};
+  state.onboarded=true;
+  if(weight && !state.weights.length){state.weight=weight;state.weights.push({value:weight,date:new Date().toLocaleDateString("pt-BR")});}
+  save(); showPage("home");
+}
+function resetApp(){if(confirm("Apagar os dados deste aparelho e começar novamente?")){localStorage.removeItem("pf30");location.reload();}}
+function render(){
+  const onboarding=document.getElementById("onboarding");
+  if(!state.onboarded){onboarding.classList.add("active");document.querySelectorAll(".page").forEach(x=>{if(x.id!=="onboarding")x.classList.remove("active")});document.querySelector(".nav").style.display="none";return;}
+  onboarding.classList.remove("active"); document.querySelector(".nav").style.display="grid";
+  const name=state.profile.name||"vamos começar";
+  const set=(id,val)=>{const el=document.getElementById(id);if(el)el.textContent=val};
+  set("welcomeTitle","Olá, "+name+"!"); set("focusText",(state.profile.goal||"Emagrecimento")+" • "+(state.profile.level||"Iniciante")+" • "+(state.profile.days||"3 dias"));
+  set("homeWeight",state.weight?Number(state.weight).toFixed(1)+" kg":"-- kg"); set("homeWorkouts",state.workouts||0);
+  set("profileName",state.profile.name||"--"); set("profileAge",state.profile.age?state.profile.age+" anos":"--"); set("profileHeight",state.profile.height?state.profile.height+" cm":"--"); set("profileGoal",state.profile.goal||"--"); set("profileLevel",state.profile.level||"--"); set("profileLimit",state.profile.limit||"Nenhuma informada.");
+  const planKey=recommendedWorkout(); set("todayPlan",planKey==="REST"?"Hoje: descanso":"Hoje: Treino "+planKey); set("todayPlanText",planKey==="REST"?"Dia de recuperação. Faça uma caminhada leve ou descanse.":"Complete o treino e avance para o próximo dia.");
+  const pct=workoutPlans[currentWorkout]?Math.round(state.done.length/workoutPlans[currentWorkout].ex.length*100):0; set("todayStatus",pct+"%"); const bar=document.getElementById("todayBar");if(bar)bar.style.width=pct+"%"; set("todayText",pct>=100?"Treino concluído. Excelente!":"Comece seu treino e registre sua alimentação.");
+  renderMeals(); renderEvolution();
+}
+function renderMeals(){
+  const cal=state.meals.reduce((a,m)=>a+(Number(m.cal)||0),0), prot=state.meals.reduce((a,m)=>a+(Number(m.prot)||0),0);
+  ["calories","calTotal"].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=cal});
+  ["protein","protTotal"].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=prot+" g"});
+  const list=document.getElementById("mealList");if(list)list.innerHTML=state.meals.map(m=>`<div class="card meal"><strong>${m.type||"Refeição"}</strong><div>${m.desc||""}</div><div class="small">${m.cal||0} kcal • ${m.prot||0} g proteína</div></div>`).join("");
+  const goal=2100,bar=document.getElementById("calBar");if(bar)bar.style.width=Math.min(100,cal/goal*100)+"%"; const gl=document.getElementById("calGoalLabel");if(gl)gl.textContent=goal.toLocaleString("pt-BR")+" kcal";
+}
+function renderEvolution(){
+  const current=state.weight, first=state.weights[0]?.value;
+  const set=(id,val)=>{const e=document.getElementById(id);if(e)e.textContent=val};
+  set("evoWeight",current?Number(current).toFixed(1):"--"); set("evoLoss",current&&first?(Number(current)-Number(first)).toFixed(1):"--"); set("evoWorkouts",state.workouts||0);
+  const chart=document.getElementById("weightChart"),empty=document.getElementById("chartEmpty");
+  if(chart){chart.innerHTML=""; const vals=state.weights.slice(-12); if(vals.length<2){if(empty)empty.style.display="block";} else {if(empty)empty.style.display="none"; const min=Math.min(...vals.map(x=>x.value)),max=Math.max(...vals.map(x=>x.value)); vals.forEach(v=>{const b=document.createElement("div");b.className="bar";b.style.height=(35+(max===min?40:((v.value-min)/(max-min))*55))+"%";b.title=v.value+" kg";b.innerHTML=`<span>${Number(v.value).toFixed(1)}</span>`;chart.appendChild(b);});}}
+  const badges=[
+    ["🏁","Primeiro treino",state.workouts>=1],["🔥","3 treinos",state.workouts>=3],["💪","10 treinos",state.workouts>=10],["📅","7 dias",state.planDay>=8],["⚖️","Primeiro peso",state.weights.length>=1],["📈","3 registros",state.weights.length>=3]
+  ];
+  const box=document.getElementById("badges");if(box)box.innerHTML=badges.map(b=>`<div class="badge ${b[2]?"":"locked"}"><div class="ico">${b[0]}</div><b>${b[1]}</b></div>`).join("");
+  set("badgeCount",badges.filter(b=>b[2]).length+"/"+badges.length);
+}
+function addWeight(){const input=document.getElementById("newWeight");const v=parseFloat(String(input?.value||"").replace(",","."));if(!v||v<20||v>300){alert("Informe um peso válido.");return}state.weight=v;state.weights.push({value:v,date:new Date().toLocaleDateString("pt-BR")});input.value="";save();}
+function previewProgressPhoto(input,slot){const f=input.files?.[0];if(!f)return;const url=URL.createObjectURL(f);slot.innerHTML="";const img=document.createElement("img");img.src=url;slot.appendChild(img);state[input.id==="startPhoto"?"startPhoto":"currentPhoto"]=true;save();}
 const workoutPlans={
 A:{name:"Treino A",duration:"35 min",ex:[
 ["Agachamento para cadeira","3 × 8–12",60,"Controle a descida e use uma cadeira firme como referência.","https://www.youtube.com/watch?v=u9kxHtK6p4c"],
@@ -392,9 +389,36 @@ function finishWorkout(){
 function addMeal(){let desc=document.getElementById("mealDesc").value.trim();if(!desc){alert("Digite o que você comeu.");return}state.meals.push({type:document.getElementById("mealType").value,desc,cal:document.getElementById("mealCal").value||0,prot:document.getElementById("mealProt").value||0});document.getElementById("mealDesc").value="";document.getElementById("mealCal").value="";document.getElementById("mealProt").value="";save()}
 function previewPhoto(e){let f=e.target.files[0];if(!f)return;let img=document.getElementById("photoPreview");img.src=URL.createObjectURL(f);img.style.display="block";state.photo=true}
 function savePhoto(){let d=document.getElementById("photoDesc").value.trim();if(!d){alert("Descreva a refeição para salvar.");return}state.photo=d;save();alert("Refeição salva.")}
+function analyzeMeal(){const d=document.getElementById("photoDesc")?.value.trim();const q=document.getElementById("photoQty")?.value.trim();if(!d){alert("Descreva o que você comeu.");return}state.photo={desc:d,qty:q||""};save();alert("Refeição registrada. A análise automática por IA será conectada na próxima etapa.");}
 function saveWeight(){let v=parseFloat(document.getElementById("weightInput").value);if(!v||v<20||v>300){alert("Informe um peso válido.");return}state.weight=v;state.weights.push({value:v,date:new Date().toLocaleDateString("pt-BR")});document.getElementById("weightInput").value="";save()}
 let timer=60,interval=null;function startTimer(sec){clearInterval(interval);timer=sec;document.getElementById("timer").textContent=timer;interval=setInterval(()=>{timer--;document.getElementById("timer").textContent=timer;if(timer<=0){clearInterval(interval);navigator.vibrate?.(200)}},1000)}
+// Navegação e eventos principais
+document.querySelectorAll('.nav button[data-page]').forEach(btn => {
+  btn.addEventListener('click', () => showPage(btn.dataset.page));
+});
+const finishBtn=document.getElementById('finishOnboardingBtn');
+if(finishBtn) finishBtn.addEventListener('click', finishOnboarding);
+
+// Garante que as funções usadas pelos elementos dinâmicos estejam disponíveis no navegador
+window.showPage=showPage;
+window.finishOnboarding=finishOnboarding;
+window.selectWorkout=selectWorkout;
+window.toggleExercise=toggleExercise;
+window.finishWorkout=finishWorkout;
+window.addMeal=addMeal;
+window.savePhoto=savePhoto;
+window.addWeight=addWeight;
+window.startTimer=startTimer;
+window.resetApp=resetApp;
+
 buildExercises();renderSchedule();renderMeals();renderEvolution();render();
+
+// Atualiza o service worker para evitar que uma versão antiga fique presa no celular
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('./sw.js').then(reg=>reg.update()).catch(()=>{});
+  });
+}
 
 const mealInput=document.getElementById("mealPhoto");
 if(mealInput){mealInput.addEventListener("change",e=>{
@@ -409,14 +433,5 @@ if(mealInput){mealInput.addEventListener("change",e=>{
  if(input)input.addEventListener("change",()=>previewProgressPhoto(input,input.parentElement));
 });
 </script>
-
-<script>
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("./sw.js").catch(() => {});
-  });
-}
-</script>
-
 </body>
 </html>

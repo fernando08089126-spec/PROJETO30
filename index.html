@@ -1,0 +1,422 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#111111">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Projeto 30">
+<title>Projeto 30 | Fitness Full</title>
+<style>
+:root{--bg:#0b0b0b;--card:#171717;--card2:#202020;--text:#fff;--muted:#a7a7a7;--accent:#d7ff00;--line:#2b2b2b;--danger:#ff5c5c}
+*{box-sizing:border-box}body{margin:0;background:#f3f3f3;font-family:Arial,Helvetica,sans-serif;color:#111}
+.app{max-width:520px;margin:auto;min-height:100vh;background:var(--bg);color:var(--text);padding-bottom:84px}
+header{padding:20px 18px 16px;background:#111;position:sticky;top:0;z-index:10;border-bottom:1px solid #222}
+.brand{font-weight:900;letter-spacing:.5px}.brand span{color:var(--accent)}.small{font-size:12px;color:var(--muted)}
+main{padding:16px}.page{display:none}.page.active{display:block}
+h1{font-size:27px;margin:4px 0 8px}h2{font-size:20px;margin:22px 0 10px}h3{margin:0 0 7px;font-size:16px}.muted{color:var(--muted)}
+.hero{background:linear-gradient(145deg,#202020,#111);border:1px solid #2b2b2b;border-radius:22px;padding:20px;margin-bottom:14px}
+.hero .tag{display:inline-block;background:var(--accent);color:#111;padding:6px 9px;border-radius:999px;font-weight:800;font-size:11px;margin-bottom:12px}
+.big{font-size:38px;font-weight:900}.accent{color:var(--accent)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:15px;margin-bottom:10px}.stat{font-size:25px;font-weight:900;margin-top:6px}
+button{border:0;border-radius:13px;padding:13px 15px;font-weight:800;font-size:14px;cursor:pointer}.primary{background:var(--accent);color:#111;width:100%}.secondary{background:#292929;color:#fff}.danger{background:#3a1717;color:#ffb0b0}.row{display:flex;gap:8px;align-items:center}.between{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.exercise{background:#171717;border:1px solid #2b2b2b;border-radius:16px;padding:14px;margin:9px 0}.pill{font-size:11px;background:#292929;color:#ddd;border-radius:999px;padding:5px 8px}.check{width:100%;margin-top:10px;background:#292929;color:#fff}.check.done{background:var(--accent);color:#111}
+.timer{font-size:48px;text-align:center;font-weight:900;margin:10px}.timerbox{background:#111;border:1px solid #292929;border-radius:18px;padding:15px;margin:12px 0}
+input,textarea,select{width:100%;background:#101010;color:#fff;border:1px solid #343434;border-radius:12px;padding:12px;margin:5px 0 10px;font-size:15px}label{font-size:12px;color:#bbb}
+.meal{border-left:3px solid var(--accent);padding-left:12px;margin:12px 0}.meal strong{display:block;margin-bottom:3px}
+.progressbar{height:9px;background:#292929;border-radius:99px;overflow:hidden}.progressbar div{height:100%;background:var(--accent);width:0}
+.nav{position:fixed;bottom:0;left:0;right:0;max-width:520px;margin:auto;background:#101010;border-top:1px solid #292929;display:grid;grid-template-columns:repeat(5,1fr);z-index:20}.nav button{background:transparent;color:#999;border-radius:0;padding:10px 4px;font-size:11px}.nav button.active{color:var(--accent)}
+#photoPreview{width:100%;border-radius:16px;display:none;margin:10px 0}
+.notice{font-size:12px;color:#aaa;line-height:1.5;background:#151515;padding:12px;border-radius:13px}
+ul{padding-left:18px;color:#ccc;line-height:1.7}
+</style>
+
+<style>
+.plan-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:12px 0}
+.plan-btn{padding:13px;border:1px solid #333;background:#151515;color:#fff;border-radius:14px;text-align:left}
+.plan-btn.active{border-color:#fff;background:#252525}
+.schedule{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-top:10px}
+.sday{padding:8px 2px;border-radius:9px;text-align:center;background:#171717;font-size:11px}
+.sday.done{background:#fff;color:#000}.sday.current{outline:2px solid #aaa}
+.video-card{border-radius:15px;overflow:hidden;background:#111;margin:10px 0}
+.video-card .video-cover{height:145px;display:flex;align-items:center;justify-content:center;font-size:42px;background:linear-gradient(135deg,#111,#292929)}
+.video-card a{display:block;padding:10px;color:#fff;text-decoration:none;text-align:center}
+.next-box{border:1px solid #333;background:#141414;border-radius:15px;padding:14px;margin:12px 0}
+</style>
+<style>
+.meal-card{border:1px solid #2b2b2b;background:#151515;border-radius:15px;padding:14px;margin:10px 0}
+.meal-photo{width:100%;max-height:260px;object-fit:cover;border-radius:14px}
+</style><style>
+.evo-hero{background:linear-gradient(135deg,#121212,#202020);border:1px solid #333;border-radius:18px;padding:18px;margin-bottom:12px}
+.kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.kpi{background:#151515;border:1px solid #2b2b2b;border-radius:14px;padding:12px;text-align:center}
+.kpi b{font-size:22px;display:block}
+.ach-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}
+.badge{border:1px solid #333;background:#151515;border-radius:15px;padding:15px;text-align:center}
+.badge.locked{opacity:.38;filter:grayscale(1)}
+.badge .ico{font-size:30px;margin-bottom:6px}
+.chart{height:190px;display:flex;align-items:flex-end;gap:7px;padding:12px 4px 0}
+.bar{flex:1;min-width:7px;background:#777;border-radius:7px 7px 2px 2px;position:relative}
+.bar span{position:absolute;bottom:-19px;left:50%;transform:translateX(-50%);font-size:9px}
+.photo-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.photo-slot{height:130px;border-radius:14px;background:#161616;border:1px dashed #444;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.photo-slot img{width:100%;height:100%;object-fit:cover}
+</style>
+<link rel="manifest" href="./manifest.webmanifest">
+<meta name="theme-color" content="#0b0b0d">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+</head>
+<body>
+<div class="app">
+<header><div class="brand">FITNESS FULL <span>| PROJETO 30</span></div><div class="small">Treino em casa • emagrecimento • evolução</div></header>
+
+<main>
+<section id="onboarding" class="page active">
+  <div class="hero">
+    <div class="tag">PRIMEIRO PASSO</div>
+    <h1>Vamos montar seu Projeto 30.</h1>
+    <p class="muted">Preencha seus dados para o aplicativo adaptar a experiência ao seu objetivo.</p>
+    <div class="card" style="background:#111">
+      <label>Nome</label><input id="obName" placeholder="Como quer ser chamado?">
+      <div class="row">
+        <div style="flex:1"><label>Idade</label><input id="obAge" type="number" placeholder="35"></div>
+        <div style="flex:1"><label>Sexo</label><select id="obSex"><option>Masculino</option><option>Feminino</option><option>Prefiro não informar</option></select></div>
+      </div>
+      <div class="row">
+        <div style="flex:1"><label>Peso (kg)</label><input id="obWeight" type="number" step="0.1" placeholder="82"></div>
+        <div style="flex:1"><label>Altura (cm)</label><input id="obHeight" type="number" placeholder="175"></div>
+      </div>
+      <label>Objetivo principal</label>
+      <select id="obGoal"><option>Emagrecimento</option><option>Condicionamento</option><option>Ganhar força</option><option>Criar rotina</option></select>
+      <label>Nível</label>
+      <select id="obLevel"><option>Iniciante</option><option>Intermediário</option><option>Avançado</option></select>
+      <label>Quantos dias por semana?</label>
+      <select id="obDays"><option>3 dias</option><option>4 dias</option><option>5 dias</option><option>6 dias</option></select>
+      <label>Alguma limitação ou exercício que causa dor?</label>
+      <textarea id="obLimit" rows="2" placeholder="Opcional. Ex.: joelho, punho, lombar..."></textarea>
+      <button class="primary" onclick="finishOnboarding()">CRIAR MEU PROJETO 30</button>
+    </div>
+  </div>
+</section>
+
+<section id="home" class="page">
+  <div class="hero">
+    <div class="tag">PROJETO 30</div>
+    <h1 id="welcomeTitle">Vamos começar.</h1>
+    <p class="muted">Treinos em casa, alimentação simples e evolução sem complicação.</p>
+    <button class="primary" onclick="showPage('treino')">COMEÇAR TREINO</button>
+  </div>
+  <div class="grid">
+    <div class="card"><div class="small">Peso atual</div><div class="stat" id="homeWeight">-- kg</div></div>
+    <div class="card"><div class="small">Treinos concluídos</div><div class="stat" id="homeWorkouts">0</div></div>
+  </div>
+  <div class="card">
+    <div class="between"><h3>Meta de hoje</h3><span class="pill" id="todayStatus">0%</span></div>
+    <div class="progressbar"><div id="todayBar"></div></div>
+    <p class="muted" id="todayText">Comece seu treino e registre sua alimentação.</p>
+  </div>
+  <div class="card"><h3>Seu foco</h3><p id="focusText" class="muted">Emagrecimento com treinos curtos e consistentes.</p></div>
+</section>
+  <div class="hero">
+    <div class="tag">SEU PROGRAMA</div>
+    <h1>30 dias para criar constância.</h1>
+    <p class="muted">Treinos de 20 a 40 minutos, alimentação simples e acompanhamento da sua evolução.</p>
+    <button class="primary" onclick="showPage('treino')">COMEÇAR TREINO</button>
+  </div>
+  <div class="grid">
+    <div class="card"><div class="small">Peso atual</div><div class="stat" id="homeWeight">-- kg</div></div>
+    <div class="card"><div class="small">Treinos concluídos</div><div class="stat" id="homeWorkouts">0</div></div>
+  </div>
+  <div class="card">
+    <div class="between"><h3>Meta de hoje</h3><span class="pill" id="todayStatus">0%</span></div>
+    <div class="progressbar"><div id="todayBar"></div></div>
+    <p class="muted" id="todayText">Comece seu treino e registre sua alimentação.</p>
+  </div>
+  <div class="card"><h3>Como funciona</h3><ul><li>Escolha o treino do dia.</li><li>Faça os exercícios seguindo as instruções.</li><li>Registre suas refeições.</li><li>Acompanhe peso e evolução.</li></ul></div>
+</section>
+
+<section id="treino" class="page">
+  <div class="between"><div><div class="tag">TREINO</div><h1 id="workoutTitle">Treino A</h1></div><span class="pill" id="workoutDuration">35 min</span></div>
+  <div class="next-box">
+    <div class="small">PLANO AUTOMÁTICO</div>
+    <h3 id="todayPlan">Hoje: Treino A</h3>
+    <p class="muted" id="todayPlanText">Complete o treino e avance para o próximo dia.</p>
+  </div>
+  <div class="plan-grid">
+    <button class="plan-btn active" onclick="selectWorkout('A',this)"><b>Treino A</b><br><span class="small">Corpo inteiro</span></button>
+    <button class="plan-btn" onclick="selectWorkout('B',this)"><b>Treino B</b><br><span class="small">Força geral</span></button>
+    <button class="plan-btn" onclick="selectWorkout('C',this)"><b>Treino C</b><br><span class="small">Condicionamento</span></button>
+    <button class="plan-btn" onclick="selectWorkout('D',this)"><b>Treino D</b><br><span class="small">Mobilidade</span></button>
+  </div>
+  <div class="card">
+    <div class="between"><h3>Projeto 30</h3><span class="pill" id="dayLabel">Dia 1/30</span></div>
+    <div class="schedule" id="schedule30"></div>
+  </div>
+  <div id="exerciseList"></div>
+  <div class="timerbox"><div class="small" style="text-align:center">DESCANSO</div><div class="timer" id="timer">60</div><div class="row"><button class="secondary" style="flex:1" onclick="startTimer(30)">30s</button><button class="secondary" style="flex:1" onclick="startTimer(60)">60s</button><button class="secondary" style="flex:1" onclick="startTimer(90)">90s</button></div></div>
+  <button class="primary" onclick="finishWorkout()">CONCLUIR TREINO</button>
+  <p class="notice" style="margin-top:12px">Se houver dor forte, tontura ou mal-estar, pare. O aplicativo não substitui avaliação de um profissional.</p>
+</section>
+
+<section id="alimentacao" class="page">
+  <h1>Alimentação</h1><p class="muted">Registre o que você come e acompanhe sua estimativa diária.</p>
+  <div class="grid">
+    <div class="card"><div class="small">Calorias estimadas</div><div class="stat" id="calories">0</div><div class="small">kcal</div></div>
+    <div class="card"><div class="small">Proteína estimada</div><div class="stat" id="protein">0 g</div></div>
+  </div>
+  <div class="card">
+    <h3>Adicionar refeição</h3>
+    <label>Refeição</label><select id="mealType"><option>Café da manhã</option><option>Almoço</option><option>Lanche</option><option>Jantar</option><option>Ceia</option></select>
+    <label>Descrição e quantidade</label><textarea id="mealDesc" rows="3" placeholder="Ex.: 150 g de frango, 250 g de batata e salada"></textarea>
+    <div class="row"><input id="mealCal" type="number" placeholder="kcal"><input id="mealProt" type="number" placeholder="Proteína (g)"></div>
+    <button class="primary" onclick="addMeal()">ADICIONAR</button>
+  </div>
+  <div id="mealList"></div>
+  <div class="notice">As calorias e proteínas podem ser estimadas. Para maior precisão, informe os pesos dos alimentos.</div>
+</section>
+
+<section id="foto" class="page">
+  <h1>Foto da refeição</h1>
+  <p class="muted">Tire ou escolha uma foto e descreva o prato. Nesta versão, o registro é salvo para análise.</p>
+  <div class="card">
+    <input type="file" accept="image/*" capture="environment" onchange="previewPhoto(event)">
+    <img id="photoPreview">
+    <textarea id="photoDesc" rows="3" placeholder="Ex.: arroz, feijão, frango, salada. Aproximadamente 150 g de frango."></textarea>
+    <button class="primary" onclick="savePhoto()">SALVAR REFEIÇÃO</button>
+  </div>
+  <div class="card"><h3>Próxima evolução</h3><p class="muted">A versão conectada à IA poderá estimar automaticamente calorias, proteínas, carboidratos e gorduras a partir da foto e das quantidades informadas.</p></div>
+</section>
+
+
+<section id="foto" class="page">
+  <div class="tag">IA DA ALIMENTAÇÃO</div>
+  <h1>O que você comeu?</h1>
+  <p class="muted">Tire uma foto e registre os alimentos. Nesta versão, a estimativa é feita pelo que você informar. A análise automática por IA será conectada na próxima etapa.</p>
+  <div class="card">
+    <input id="mealPhoto" type="file" accept="image/*" capture="environment">
+    <div id="photoPreview" style="margin-top:12px"></div>
+    <label>O que tem no prato?</label>
+    <textarea id="photoDesc" rows="3" placeholder="Ex.: arroz, frango, salada e feijão"></textarea>
+    <label>Quantidade aproximada</label>
+    <input id="photoQty" placeholder="Ex.: 150 g de frango + 200 g de batata">
+    <button class="primary" onclick="analyzeMeal()">REGISTRAR REFEIÇÃO</button>
+  </div>
+  <div class="card">
+    <h3>Como funciona</h3>
+    <p class="muted">A foto ajuda a identificar os alimentos, mas peso em gramas melhora bastante a estimativa. Calorias e macros são aproximados.</p>
+  </div>
+</section>
+
+<section id="alimentacao" class="page">
+  <div class="tag">ALIMENTAÇÃO</div>
+  <h1>Seu dia</h1>
+  <div class="grid">
+    <div class="card"><div class="small">Calorias</div><div class="stat" id="calTotal">0</div><div class="muted">kcal</div></div>
+    <div class="card"><div class="small">Proteína</div><div class="stat" id="protTotal">0</div><div class="muted">g</div></div>
+  </div>
+  <div class="card">
+    <div class="between"><h3>Meta diária</h3><span class="pill" id="calGoalLabel">2.100 kcal</span></div>
+    <div class="progressbar"><div id="calBar"></div></div>
+    <p class="muted">Use a meta como referência. Ela pode ser ajustada conforme sua evolução e orientação profissional.</p>
+  </div>
+  <div id="mealList"></div>
+  <button class="primary" onclick="showPage('foto')">📷 REGISTRAR REFEIÇÃO</button>
+</section>
+
+<section id="suplementos" class="page">
+  <div class="tag">FITNESS FULL</div>
+  <h1>Suplementação</h1>
+  <p class="muted">Sugestões gerais para complementar sua rotina. Suplemento não substitui alimentação.</p>
+  <div class="card"><h3>Creatina</h3><p class="muted">Opção prática para quem busca apoiar força e desempenho nos treinos.</p><button class="secondary" onclick="alert('Área de produto da Fitness Full. Na versão comercial, este botão pode abrir o produto ou WhatsApp da loja.')">VER NA FITNESS FULL</button></div>
+  <div class="card"><h3>Whey protein</h3><p class="muted">Uma forma prática de aumentar a ingestão de proteína quando necessário.</p><button class="secondary" onclick="alert('Área de produto da Fitness Full. Na versão comercial, este botão pode abrir o produto ou WhatsApp da loja.')">VER NA FITNESS FULL</button></div>
+  <div class="card"><h3>Quer uma recomendação?</h3><p class="muted">Na versão comercial, o cliente poderá informar objetivo e rotina e receber opções disponíveis na loja.</p></div>
+</section>
+
+<section id="evolucao" class="page">
+  <div class="tag">EVOLUÇÃO</div>
+  <h1>Veja seu progresso</h1>
+  <div class="evo-hero">
+    <div class="small">PROJETO 30</div>
+    <h2 id="evoHeadline">Comece hoje e compare depois.</h2>
+    <p class="muted">O objetivo é acompanhar tendência, constância e hábitos. Não é preciso buscar perfeição.</p>
+  </div>
+
+  <div class="kpi-row">
+    <div class="kpi"><b id="evoWeight">--</b><span class="small">kg atual</span></div>
+    <div class="kpi"><b id="evoLoss">--</b><span class="small">kg diferença</span></div>
+    <div class="kpi"><b id="evoWorkouts">0</b><span class="small">treinos</span></div>
+  </div>
+
+  <div class="card">
+    <h3>Peso</h3>
+    <div class="chart" id="weightChart"></div>
+    <p class="muted" id="chartEmpty">Registre pelo menos dois pesos para visualizar sua evolução.</p>
+  </div>
+
+  <div class="card">
+    <h3>Registrar peso</h3>
+    <div class="row"><input id="newWeight" type="number" step="0.1" placeholder="Ex.: 81,5"><button class="secondary" onclick="addWeight()">SALVAR</button></div>
+  </div>
+
+  <div class="card">
+    <h3>Fotos de evolução</h3>
+    <p class="muted">Use fotos em condições parecidas para comparar visualmente.</p>
+    <div class="photo-grid">
+      <label class="photo-slot">Início<input id="startPhoto" type="file" accept="image/*" hidden></label>
+      <label class="photo-slot">Atual<input id="currentPhoto" type="file" accept="image/*" hidden></label>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="between"><h3>Conquistas</h3><span class="pill" id="badgeCount">0/6</span></div>
+    <div class="ach-grid" id="badges"></div>
+  </div>
+</section>
+
+<section id="perfil" class="page">
+  <h1>Meu perfil</h1>
+  <div class="card">
+    <div class="small">Nome</div><h3 id="profileName">--</h3>
+    <div class="grid">
+      <div><div class="small">Idade</div><div class="stat" id="profileAge">--</div></div>
+      <div><div class="small">Altura</div><div class="stat" id="profileHeight">--</div></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>Objetivo</h3><p id="profileGoal" class="muted">--</p>
+    <h3>Nível</h3><p id="profileLevel" class="muted">--</p>
+    <h3>Limitações</h3><p id="profileLimit" class="muted">Nenhuma informada.</p>
+  </div>
+  <div class="card">
+    <h3>Privacidade</h3>
+    <p class="muted">Nesta versão, seus registros ficam salvos localmente neste aparelho. Fotos de refeições não são enviadas para um servidor.</p>
+  </div>
+  <button class="danger" style="width:100%" onclick="resetApp()">RECOMEÇAR PROJETO 30</button>
+</section>
+</main>
+
+<nav class="nav">
+<button data-page="home" class="active" onclick="showPage('home')">⌂<br>Início</button>
+<button data-page="treino" onclick="showPage('treino')">🔥<br>Treino</button>
+<button data-page="alimentacao" onclick="showPage('alimentacao')">🍽️<br>Comida</button>
+<button data-page="foto" onclick="showPage('foto')">📷<br>Foto</button>
+<button data-page="evolucao" onclick="showPage('evolucao')">📈<br>Evolução</button>
+<button data-page="suplementos" onclick="showPage('suplementos')">💪<br>Suples</button>
+<button data-page="perfil" onclick="showPage('perfil')">👤<br>Perfil</button>
+</nav>
+</div>
+
+<script>
+const workoutPlans={
+A:{name:"Treino A",duration:"35 min",ex:[
+["Agachamento para cadeira","3 × 8–12",60,"Controle a descida e use uma cadeira firme como referência.","https://www.youtube.com/watch?v=u9kxHtK6p4c"],
+["Flexão inclinada","3 × 8–12",60,"Use um apoio firme e mantenha o corpo alinhado.","https://www.youtube.com/watch?v=jrHLvEldboc"],
+["Ponte de glúteos","3 × 10–15",60,"Suba o quadril contraindo os glúteos.","https://www.youtube.com/results?search_query=ponte+de+gluteos+exercicio"],
+["Remada com mochila","3 × 8–12",75,"Puxe a mochila em direção ao tronco sem balançar.","https://www.youtube.com/results?search_query=remada+com+mochila+exercicio"],
+["Prancha inclinada","3 × 20–35s",45,"Mantenha o abdômen firme e respire normalmente.","https://www.youtube.com/results?search_query=prancha+inclinada+exercicio"]]},
+B:{name:"Treino B",duration:"35 min",ex:[
+["Levantamento terra com mochila","3 × 8–12",75,"Leve o quadril para trás e mantenha a coluna neutra.","https://www.youtube.com/results?search_query=levantamento+terra+com+mochila"],
+["Flexão na parede","3 × 10–15",60,"Desça com controle e mantenha o corpo alinhado.","https://www.youtube.com/results?search_query=flexao+na+parede+iniciante"],
+["Afundo assistido","3 × 8–10 por lado",60,"Use apoio e trabalhe em amplitude confortável.","https://www.youtube.com/results?search_query=afundo+assistido+iniciante"],
+["Remada unilateral com mochila","3 × 10–12",60,"Puxe o peso em direção ao quadril.","https://www.youtube.com/results?search_query=remada+unilateral+mochila"],
+["Dead bug","3 × 8–12 por lado",45,"Mantenha o tronco estável durante o movimento.","https://www.youtube.com/results?search_query=dead+bug+exercicio"]]},
+C:{name:"Treino C",duration:"25 min",ex:[
+["Marcha rápida no lugar","4 × 45s",30,"Ritmo confortável e sem impacto excessivo.","https://www.youtube.com/results?search_query=marcha+rapida+no+lugar+exercicio"],
+["Sentar e levantar da cadeira","3 × 10",45,"Faça o movimento com controle.","https://www.youtube.com/results?search_query=sentar+e+levantar+cadeira+exercicio"],
+["Elevação de joelhos","3 × 30s",30,"Mantenha postura alta e ritmo moderado.","https://www.youtube.com/results?search_query=elevacao+de+joelhos+exercicio"],
+["Flexão inclinada","3 × 8–12",45,"Ajuste a altura do apoio à sua força.","https://www.youtube.com/watch?v=jrHLvEldboc"],
+["Prancha inclinada","3 × 20–30s",30,"Contraia o abdômen sem prender a respiração.","https://www.youtube.com/results?search_query=prancha+inclinada+exercicio"]]},
+D:{name:"Treino D",duration:"20 min",ex:[
+["Mobilidade de quadril","2 × 45s",20,"Movimentos lentos e sem forçar amplitude.","https://www.youtube.com/results?search_query=mobilidade+de+quadril"],
+["Mobilidade de ombros","2 × 45s",20,"Faça círculos controlados.","https://www.youtube.com/results?search_query=mobilidade+de+ombros"],
+["Ponte de glúteos","2 × 12",30,"Ative os glúteos sem arquear a lombar.","https://www.youtube.com/results?search_query=ponte+de+gluteos+exercicio"],
+["Bird dog","2 × 8 por lado",30,"Mantenha o tronco estável.","https://www.youtube.com/results?search_query=bird+dog+exercicio"],
+["Respiração diafragmática","3 × 60s",20,"Respire lentamente e relaxe.","https://www.youtube.com/results?search_query=respiracao+diafragmatica"]]}
+};
+let currentWorkout="A";
+state.planDay=state.planDay||1;
+function recommendedWorkout(){
+ const cycle=["A","REST","B","REST","C","REST","D"];
+ return cycle[(state.planDay-1)%cycle.length];
+}
+function selectWorkout(plan,btn){
+ currentWorkout=plan;
+ document.querySelectorAll(".plan-btn").forEach(b=>b.classList.remove("active"));
+ if(btn)btn.classList.add("active");
+ document.getElementById("workoutTitle").textContent=workoutPlans[plan].name;
+ document.getElementById("workoutDuration").textContent=workoutPlans[plan].duration;
+ state.done=[]; save(); buildExercises();
+}
+function renderSchedule(){
+ const el=document.getElementById("schedule30"); if(!el)return;
+ el.innerHTML="";
+ for(let i=1;i<=30;i++){
+   const d=document.createElement("div");
+   d.className="sday"+(i===state.planDay?" current":"")+(i<state.planDay?" done":"");
+   const cycle=["A","R","B","R","C","R","D"];
+   d.innerHTML="<b>"+i+"</b><br>"+cycle[(i-1)%7];
+   el.appendChild(d);
+ }
+ document.getElementById("dayLabel").textContent="Dia "+Math.min(state.planDay,30)+"/30";
+}
+function buildExercises(){
+ const plan=workoutPlans[currentWorkout];
+ const box=document.getElementById("exerciseList"); if(!box)return;
+ box.innerHTML=plan.ex.map((e,i)=>`
+ <div class="card exercise">
+   <div class="between"><h3>${i+1}. ${e[0]}</h3><span class="pill">${e[2]}s</span></div>
+   <div class="video-card"><div class="video-cover">▶</div><a href="${e[4]}" target="_blank">VER DEMONSTRAÇÃO</a></div>
+   <p><b>${e[1]}</b></p><p class="muted">${e[3]}</p>
+   <button class="check ${state.done.includes(i)?"done":""}" onclick="toggleExercise(${i})">${state.done.includes(i)?"✓ CONCLUÍDO":"MARCAR COMO FEITO"}</button>
+ </div>`).join("");
+ const pct=Math.round(state.done.length/plan.ex.length*100);
+ const wp=document.getElementById("workoutProgress"); if(wp)wp.textContent=state.done.length+"/"+plan.ex.length;
+ const wb=document.getElementById("workoutBar"); if(wb)wb.style.width=pct+"%";
+ renderSchedule();
+}
+function toggleExercise(i){
+ state.done=state.done.includes(i)?state.done.filter(x=>x!==i):[...state.done,i];
+ save(); buildExercises();
+}
+function finishWorkout(){
+ const plan=workoutPlans[currentWorkout];
+ if(state.done.length<plan.ex.length){alert("Complete os exercícios antes de concluir.");return}
+ state.workouts++;
+ if(state.planDay<30)state.planDay++;
+ state.done=[];save();alert("Treino concluído! 🔥");showPage("home");
+}
+function addMeal(){let desc=document.getElementById("mealDesc").value.trim();if(!desc){alert("Digite o que você comeu.");return}state.meals.push({type:document.getElementById("mealType").value,desc,cal:document.getElementById("mealCal").value||0,prot:document.getElementById("mealProt").value||0});document.getElementById("mealDesc").value="";document.getElementById("mealCal").value="";document.getElementById("mealProt").value="";save()}
+function previewPhoto(e){let f=e.target.files[0];if(!f)return;let img=document.getElementById("photoPreview");img.src=URL.createObjectURL(f);img.style.display="block";state.photo=true}
+function savePhoto(){let d=document.getElementById("photoDesc").value.trim();if(!d){alert("Descreva a refeição para salvar.");return}state.photo=d;save();alert("Refeição salva.")}
+function saveWeight(){let v=parseFloat(document.getElementById("weightInput").value);if(!v||v<20||v>300){alert("Informe um peso válido.");return}state.weight=v;state.weights.push({value:v,date:new Date().toLocaleDateString("pt-BR")});document.getElementById("weightInput").value="";save()}
+let timer=60,interval=null;function startTimer(sec){clearInterval(interval);timer=sec;document.getElementById("timer").textContent=timer;interval=setInterval(()=>{timer--;document.getElementById("timer").textContent=timer;if(timer<=0){clearInterval(interval);navigator.vibrate?.(200)}},1000)}
+buildExercises();renderSchedule();renderMeals();renderEvolution();render();
+
+const mealInput=document.getElementById("mealPhoto");
+if(mealInput){mealInput.addEventListener("change",e=>{
+ const f=e.target.files[0],box=document.getElementById("photoPreview");
+ if(!f||!box)return;
+ const url=URL.createObjectURL(f);
+ box.innerHTML='<img class="meal-photo" src="'+url+'" alt="Foto da refeição">';
+});}
+
+["startPhoto","currentPhoto"].forEach(id=>{
+ const input=document.getElementById(id);
+ if(input)input.addEventListener("change",()=>previewProgressPhoto(input,input.parentElement));
+});
+</script>
+
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js").catch(() => {});
+  });
+}
+</script>
+
+</body>
+</html>
